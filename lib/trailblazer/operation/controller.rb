@@ -44,6 +44,7 @@ private
   end
 
   def process_params!(params)
+    params
   end
 
   # Normalizes parameters and invokes the operation (including its builders).
@@ -51,8 +52,8 @@ private
     # Per default, only treat :html as non-document.
     options[:is_document] ||= request.format == :html ? false : true
 
-    process_params!(params)
-    res, op = Trailblazer::Endpoint.new(operation_class, params, request, options).(&block)
+    processed_params = process_params!(params)
+    res, op = Trailblazer::Endpoint.new(operation_class, processed_params, request, options).(&block)
     setup_operation_instance_variables!(op, options)
 
     [res, op]
